@@ -31,7 +31,8 @@ class Movie(models.Model):
     class Meta:
         indexes = [Index(fields=["title"])]
 
-    def __str__(self) -> str: return self.title
+    def __str__(self) -> str:
+        return self.title
 
 
 class User(AbstractUser):
@@ -64,7 +65,7 @@ class MovieSession(models.Model):
         related_name="movie_sessions"
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.movie.title} {self.show_time}"
 
 
@@ -79,11 +80,9 @@ class Order(models.Model):
     class Meta:
         ordering = ["-created_at"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
 
-
-from django.core.exceptions import ValidationError
 
 class Ticket(models.Model):
     row = models.IntegerField()
@@ -99,7 +98,7 @@ class Ticket(models.Model):
         related_name="tickets",
     )
 
-    def clean(self):
+    def clean(self) -> None:
         hall = self.movie_session.cinema_hall
 
         if not (1 <= self.row <= hall.rows):
@@ -133,7 +132,7 @@ class Ticket(models.Model):
             )
         ]
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self.full_clean()
         super().save(*args, **kwargs)
 
@@ -143,4 +142,3 @@ class Ticket(models.Model):
             f"{self.movie_session.show_time} "
             f"(row: {self.row}, seat: {self.seat})"
         )
-
