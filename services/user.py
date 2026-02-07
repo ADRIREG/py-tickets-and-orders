@@ -23,16 +23,14 @@ def create_user(
     return user
 
 
-from django.contrib.auth import get_user_model
-
 User = get_user_model()
 
 
-def get_user(user_id: int):
+def get_user(user_id: int) -> list:
     return User.objects.get(id=user_id)
 
 
-def update_user(user_id: int, **kwargs):
+def update_user(user_id: int, **kwargs) -> User:
     user = get_user(user_id)
 
     if "password" in kwargs:
